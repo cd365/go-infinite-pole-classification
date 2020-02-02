@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	_ "github.com/go-sql-driver/mysql"
 	"time"
 )
 
