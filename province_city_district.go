@@ -8,54 +8,54 @@ import (
 
 var Rows []*Address = []*Address{
 	&Address{
-		Id:1,
-		Name:"1",
-		Parent:0,
+		Id:     1,
+		Name:   "1",
+		Parent: 0,
 	},
 	&Address{
-		Id:2,
-		Name:"2",
-		Parent:0,
+		Id:     2,
+		Name:   "2",
+		Parent: 0,
 	},
 	&Address{
-		Id:3,
-		Name:"3",
-		Parent:0,
+		Id:     3,
+		Name:   "3",
+		Parent: 0,
 	},
 	&Address{
-		Id:4,
-		Name:"1-1",
-		Parent:1,
+		Id:     4,
+		Name:   "1-1",
+		Parent: 1,
 	},
 	&Address{
-		Id:5,
-		Name:"1-3",
-		Parent:1,
+		Id:     5,
+		Name:   "1-3",
+		Parent: 1,
 	},
 	&Address{
-		Id:6,
-		Name:"1-2",
-		Parent:1,
+		Id:     6,
+		Name:   "1-2",
+		Parent: 1,
 	},
 	&Address{
-		Id:7,
-		Name:"2-1",
-		Parent:2,
+		Id:     7,
+		Name:   "2-1",
+		Parent: 2,
 	},
 	&Address{
-		Id:8,
-		Name:"2-2",
-		Parent:2,
+		Id:     8,
+		Name:   "2-2",
+		Parent: 2,
 	},
 	&Address{
-		Id:9,
-		Name:"2-3",
-		Parent:2,
+		Id:     9,
+		Name:   "2-3",
+		Parent: 2,
 	},
 	&Address{
-		Id:10,
-		Name:"10",
-		Parent:0,
+		Id:     10,
+		Name:   "10",
+		Parent: 0,
 	},
 }
 
@@ -68,23 +68,22 @@ type Address struct {
 }
 
 // Infinite 无限极分类实现(无排序)
-func Infinite(rows []*Address) []*Address {
+func Infinite(rows []*Address) (result []*Address) {
 	maps := make(map[int64]*Address)
 	for _, v := range rows {
 		maps[v.Id] = v
 	}
 	for _, v := range maps {
+		// 顶层数据, 复制地址到result
+		if v.Parent == 0 {
+			result = append(result, v)
+		}
+		// 非顶层数据, 复制地址到上级的Child属性中
 		if _, ok := maps[v.Parent]; ok {
 			maps[v.Parent].Child = append(maps[v.Parent].Child, v)
 		}
 	}
-	result := []*Address{}
-	for _, v := range maps {
-		if v.Parent == 0 {
-			result = append(result, v)
-		}
-	}
-	return result
+	return
 }
 
 // AddressInfiniteBubbleAsc 冒泡升序
