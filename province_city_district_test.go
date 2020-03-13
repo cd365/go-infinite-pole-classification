@@ -13,6 +13,13 @@ func TestInfinite(b *testing.T) {
 	Infinite(Rows)
 }
 
+func BenchmarkInfinite(b *testing.B) {
+	// b.N不是固定的数
+	for i := 0; i < b.N; i++ {
+		Infinite(Rows)
+	}
+}
+
 func TestAddressInfiniteBubbleAsc(t *testing.T) {
 	AddressInfiniteBubbleAsc(Infinite(Rows))
 }

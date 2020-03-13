@@ -68,35 +68,34 @@ type Address struct {
 }
 
 // Infinite 无限极分类实现(无排序)
-func Infinite(rows []*Address) (result []*Address) {
-	maps := make(map[int64]*Address)
-	for _, v := range rows {
-		maps[v.Id] = v
+func Infinite(data []*Address) (result []*Address) {
+	ms := make(map[int64]*Address)
+	for _, v := range data {
+		ms[v.Id] = v
 	}
-	for _, v := range maps {
-		// 顶层数据, 复制地址到result
-		if v.Parent == 0 {
-			result = append(result, v)
-		}
+	for _, v := range ms {
 		// 非顶层数据, 复制地址到上级的Child属性中
-		if _, ok := maps[v.Parent]; ok {
-			maps[v.Parent].Child = append(maps[v.Parent].Child, v)
+		if _, ok := ms[v.Parent]; ok {
+			ms[v.Parent].Child = append(ms[v.Parent].Child, v)
+			continue
 		}
+		// 顶层或未知数据, 复制地址到result; 顶级数据:v.Parent==0;未知数据:v.Parent!=0
+		result = append(result, v)
 	}
 	return
 }
 
 // AddressInfiniteBubbleAsc 冒泡升序
 func AddressInfiniteBubbleAsc(addr []*Address) []*Address {
-	count := len(addr)
-	for i := 0; i < count-1; i++ {
-		for j := i + 1; j < count; j++ {
+	length := len(addr)
+	for i := 0; i < length-1; i++ {
+		for j := i + 1; j < length; j++ {
 			if addr[i].Id > addr[j].Id {
 				addr[i], addr[j] = addr[j], addr[i]
 			}
 		}
 	}
-	for i := 0; i < count; i++ {
+	for i := 0; i < length; i++ {
 		addr[i].Child = AddressInfiniteBubbleAsc(addr[i].Child)
 	}
 	return addr
@@ -104,15 +103,15 @@ func AddressInfiniteBubbleAsc(addr []*Address) []*Address {
 
 // AddressInfiniteBubbleDesc 冒泡降序
 func AddressInfiniteBubbleDesc(addr []*Address) []*Address {
-	count := len(addr)
-	for i := 0; i < count-1; i++ {
-		for j := i + 1; j < count; j++ {
+	length := len(addr)
+	for i := 0; i < length-1; i++ {
+		for j := i + 1; j < length; j++ {
 			if addr[i].Id < addr[j].Id {
 				addr[i], addr[j] = addr[j], addr[i]
 			}
 		}
 	}
-	for i := 0; i < count; i++ {
+	for i := 0; i < length; i++ {
 		addr[i].Child = AddressInfiniteBubbleDesc(addr[i].Child)
 	}
 	return addr
